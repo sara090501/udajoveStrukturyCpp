@@ -6,3 +6,7 @@
 38	197	7647041533983769	CMakeFiles/cv2C.dir/utils.cpp.obj	c294e7ea7751222a
 43	1436	7647024368571987	CMakeFiles/cv2C.dir/mainMy.cpp.obj	799cb0b9f3b9e0a3
 8	751	7647054570458105	CMakeFiles/cv2C.dir/needleman_wunsch.cpp.obj	28779019eb9d1813
+6	731	7652999771757974	CMakeFiles/cv2C.dir/needleman_wunsch.cpp.obj	28779019eb9d1813
+731	1027	7652999779001032	cv2C.exe	49addc6f181e3723
+5	607	7653001239085692	CMakeFiles/cv2C.dir/needleman_wunsch.cpp.obj	28779019eb9d1813
+608	701	7653001245105768	cv2C.exe	49addc6f181e3723

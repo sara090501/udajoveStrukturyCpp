@@ -66,7 +66,34 @@ needleman_wunsch::~needleman_wunsch() {
 }
 
 void needleman_wunsch::run(const sequence& seq_a, const sequence& seq_b) {
-	//TODO needleman_wunsch::run
+    this->seq_a_ = seq_a;
+    this->seq_b_ = seq_b;
+    size_t rows = this->seq_a_.get_length() + 1;
+    size_t columns = this->seq_b_.get_length() + 1;
+    if (this->score_matrix_ != nullptr) {
+        delete this->score_matrix_;
+    }
+    this->score_matrix_ = new matrix<int>(-1, rows, -1, columns);
+
+    this->score_matrix_->access(-1,-1) = 0;
+    for (int i = 0; i < this->score_matrix_->row_limit(); i++) { //row_limit -> prvy neplatny index riadku
+        this->score_matrix_->access(i, -1) =
+            this->score_matrix_->access(i - 1,-1) + this->gap_penalty_;
+    }
+    for (int j = 0; j < this->score_matrix_->column_limit(); ++j) { //row_limit -> prvy neplatny index stlpca
+        this->score_matrix_->access(-1, j) =
+            this->score_matrix_->access(-1,j - 1) + this->gap_penalty_;
+    }
+    for (int i = 0; i < this->score_matrix_->row_limit(); ++i) {
+        for (int j = 0; j < this->score_matrix_->column_limit(); ++j) { //row_limit -> prvy neplatny index stlpca
+            int left = this->score_matrix_->access(i, j - 1) + this->gap_penalty_;
+            int upper = this->score_matrix_->access(i - 1, j) + this->gap_penalty_;
+            int upperLeft = this->score_matrix_->access(i - 1, j - 1) +
+                this->similarity_matrix_.access(this->seq_a_.at(i), this->seq_b_.at(j));
+
+            this->score_matrix_->access(i, j) = utils::max(left, utils::max(upper, upperLeft));
+        }
+    }
 }
 
 void needleman_wunsch::print_score_matrix() {
@@ -86,7 +113,7 @@ void needleman_wunsch::print_score_matrix() {
     std::cout << std::endl;
     for (ssize_t j = -1; j < this->score_matrix_->column_limit() + 1; ++j) {
         for (int s = 0; s < space_count; ++s) {
-            std::cout << "–";
+            std::cout << "-";
         }
     }
     std::cout << std::endl;
